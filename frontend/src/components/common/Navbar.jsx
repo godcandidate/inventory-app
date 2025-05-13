@@ -31,8 +31,8 @@ const Navbar = () => {
             
             {user && (
               <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
-                <Link to="/dashboard" className="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:bg-gray-100">Dashboard</Link>
-                <Link to="/inventory-dashboard" className="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100">Inventory Dashboard</Link>
+                <Link to="/dashboard" className="px-3 py-2 rounded-md text-sm font-medium text-gray-900 hover:bg-gray-100">User</Link>
+                <Link to="/inventory-dashboard" className="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100">Inventory</Link>
                 {user.role === 'admin' && (
                   <Link to="/inventory" className="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100">Inventory Management</Link>
                 )}

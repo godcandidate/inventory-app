@@ -1,8 +1,16 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/layout/Layout';
 import { products, getStockStatus } from '../../data/mockData';
 
 const InventoryDashboard = () => {
+  const navigate = useNavigate();
+  
+  // Navigate to product management
+  const navigateToProductManagement = () => {
+    navigate('/inventory/management');
+  };
+  
   useEffect(() => {
     // Component mount effect
     return () => {
@@ -23,6 +31,18 @@ const InventoryDashboard = () => {
       title="Inventory Dashboard"
       description="Overview of your inventory status"
     >
+      {/* Navigation to Product Management */}
+      <div className="mb-6 flex justify-end">
+        <button
+          onClick={navigateToProductManagement}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+          Product Management
+        </button>
+      </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

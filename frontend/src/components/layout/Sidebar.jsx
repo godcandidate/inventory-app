@@ -14,12 +14,29 @@ const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [expandedMenus, setExpandedMenus] = useState({
-    inventory: true,
-    sales: true
+    users: false,
+    inventory: false,
+    sales: false
   });
   
   useEffect(() => {
-    // Initialize expanded menus state
+    // Auto-expand the relevant menu based on current path
+    const path = location.pathname;
+    let updatedMenus = {
+      users: false,
+      inventory: false,
+      sales: false
+    };
+    
+    if (path === '/dashboard' || path === '/user-management') {
+      updatedMenus.users = true;
+    } else if (path === '/inventory-dashboard' || path === '/inventory/management') {
+      updatedMenus.inventory = true;
+    } else if (path.startsWith('/sales')) {
+      updatedMenus.sales = true;
+    }
+    
+    setExpandedMenus(updatedMenus);
   }, [location.pathname]);
   
   // Direct navigation functions
@@ -29,16 +46,22 @@ const Sidebar = () => {
   
   const toggleMenu = (menu) => {
     setExpandedMenus(prev => ({
-      ...prev,
+      users: false,
+      inventory: false,
+      sales: false,
       [menu]: !prev[menu]
     }));
   };
   
   const isActive = (path) => {
-    if (path === '/inventory') {
-      return location.pathname === '/inventory' && location.pathname !== '/inventory/management';
+    if (path === '/inventory-dashboard') {
+      return location.pathname === '/inventory-dashboard';
     } else if (path === '/inventory/management') {
       return location.pathname === '/inventory/management';
+    } else if (path === '/dashboard') {
+      return location.pathname === '/dashboard';
+    } else if (path === '/user-management') {
+      return location.pathname === '/user-management';
     } else {
       return location.pathname === path;
     }
@@ -48,21 +71,47 @@ const Sidebar = () => {
     <div className="h-screen w-64 bg-white shadow-md fixed left-0 top-0 pt-16 overflow-y-auto">
       <div className="p-4">
         <ul className="space-y-2">
-          {/* Dashboard Overview */}
-          <li>
-            <Link 
-              to="/dashboard" 
-              className={`flex items-center p-2 ${isActive('/dashboard') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+          {/* User Dashboard */}
+          <li className="space-y-1">
+            <div 
+              className={`flex items-center justify-between p-2 ${(location.pathname === '/dashboard' || location.pathname === '/user-management') ? 'text-blue-600 bg-blue-50' : 'text-gray-600'} hover:text-blue-600 hover:bg-blue-50 rounded-md cursor-pointer transition-colors duration-200`}
+              onClick={() => toggleMenu('users')}
             >
-              <HomeIcon className="h-5 w-5 mr-3" />
-              Dashboard Overview
-            </Link>
+              <div className="flex items-center">
+                <HomeIcon className="h-5 w-5 mr-3" />
+                <span>User</span>
+              </div>
+              <ChevronDownIcon className={`h-4 w-4 transition-transform duration-200 ${expandedMenus.users ? 'rotate-180' : ''}`} />
+            </div>
+            
+            {expandedMenus.users && (
+              <ul className="pl-10 space-y-1">
+                <li>
+                  <Link 
+                    to="/dashboard" 
+                    className={`flex items-center p-2 ${isActive('/dashboard') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+                  >
+                    <ChartBarIcon className="h-4 w-4 mr-2" />
+                    User Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/user-management" 
+                    className={`flex items-center p-2 ${isActive('/user-management') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+                  >
+                    <ListBulletIcon className="h-4 w-4 mr-2" />
+                    User Management
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
           
           {/* Inventory Section */}
           <li className="space-y-1">
             <div 
-              className="flex items-center justify-between p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md cursor-pointer transition-colors duration-200"
+              className={`flex items-center justify-between p-2 ${(location.pathname === '/inventory-dashboard' || location.pathname === '/inventory/management') ? 'text-blue-600 bg-blue-50' : 'text-gray-600'} hover:text-blue-600 hover:bg-blue-50 rounded-md cursor-pointer transition-colors duration-200`}
               onClick={() => toggleMenu('inventory')}
             >
               <div className="flex items-center">
@@ -75,13 +124,13 @@ const Sidebar = () => {
             {expandedMenus.inventory && (
               <ul className="pl-10 space-y-1">
                 <li>
-                  <button 
-                    onClick={() => navigateTo('/inventory')}
-                    className={`flex items-center p-2 w-full text-left ${isActive('/inventory') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+                  <Link 
+                    to="/inventory-dashboard" 
+                    className={`flex items-center p-2 ${isActive('/inventory-dashboard') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
                   >
                     <ChartBarIcon className="h-4 w-4 mr-2" />
                     Inventory Dashboard
-                  </button>
+                  </Link>
                 </li>
                 <li>
                   <button 
@@ -99,7 +148,7 @@ const Sidebar = () => {
           {/* Sales Section */}
           <li className="space-y-1">
             <div 
-              className="flex items-center justify-between p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md cursor-pointer transition-colors duration-200"
+              className={`flex items-center justify-between p-2 ${location.pathname.startsWith('/sales') ? 'text-blue-600 bg-blue-50' : 'text-gray-600'} hover:text-blue-600 hover:bg-blue-50 rounded-md cursor-pointer transition-colors duration-200`}
               onClick={() => toggleMenu('sales')}
             >
               <div className="flex items-center">
@@ -133,27 +182,7 @@ const Sidebar = () => {
             )}
           </li>
           
-          {/* Alerts */}
-          <li>
-            <Link 
-              to="/alerts" 
-              className={`flex items-center p-2 ${isActive('/alerts') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
-            >
-              <ExclamationCircleIcon className="h-5 w-5 mr-3" />
-              Alerts
-            </Link>
-          </li>
-          
-          {/* Reports */}
-          <li>
-            <Link 
-              to="/reports" 
-              className={`flex items-center p-2 ${isActive('/reports') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
-            >
-              <ChartBarIcon className="h-5 w-5 mr-3" />
-              Reports
-            </Link>
-          </li>
+
         </ul>
       </div>
       <div className="absolute bottom-0 w-full p-4 border-t">

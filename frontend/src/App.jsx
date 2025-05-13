@@ -7,6 +7,7 @@ import LandingPage from './pages/LandingPage'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
+import UserManagement from './pages/UserManagement'
 import InventoryManagement from './pages/InventoryManagement'
 import InventoryDashboard from './pages/InventoryDashboard'
 import ProductManagement from './pages/ProductManagement'
@@ -54,7 +55,12 @@ function App() {
                 <Dashboard />
               </ProtectedRoute>
             } />
-            <Route path="/inventory" element={
+            <Route path="/user-management" element={
+              <AdminRoute>
+                <UserManagement />
+              </AdminRoute>
+            } />
+            <Route path="/inventory-dashboard" element={
               <AdminRoute>
                 <InventoryDashboard />
               </AdminRoute>

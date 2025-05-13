@@ -27,7 +27,7 @@ const InventoryManagement = () => {
   const outOfStockItems = products.filter(item => getStockStatus(item.stock, item.threshold) === 'Out of Stock').length;
 
   const navigateToDashboard = () => {
-    navigate('/inventory');
+    navigate('/inventory-dashboard');
   };
   
   // Handle form input changes

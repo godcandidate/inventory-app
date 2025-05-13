@@ -25,12 +25,23 @@ export const AuthProvider = ({ children }) => {
   // Login function
   const login = (userData) => {
     // In a real app, this would validate credentials with a backend
-    // For this mockup, we'll simulate a successful login
+    // For this mockup, we'll simulate a successful login based on email
+    let role = 'user';
+    
+    // Determine role based on email
+    if (userData.email.includes('admin')) {
+      role = 'admin';
+    } else if (userData.email.includes('sales')) {
+      role = 'sales';
+    } else if (userData.email.includes('inventory')) {
+      role = 'inventory';
+    }
+    
     const user = {
       id: userData.email,
       name: userData.email.split('@')[0],
       email: userData.email,
-      role: userData.email.includes('admin') ? 'admin' : 'user',
+      role: role,
     };
     
     setUser(user);

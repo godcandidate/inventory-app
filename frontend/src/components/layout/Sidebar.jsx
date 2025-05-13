@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import { 
   HomeIcon, 
   CubeIcon, 
@@ -13,6 +14,7 @@ import {
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [expandedMenus, setExpandedMenus] = useState({
     users: false,
     inventory: false,
@@ -66,6 +68,11 @@ const Sidebar = () => {
       return location.pathname === path;
     }
   };
+  
+  // Only render sidebar for admin users
+  if (user && user.role !== 'admin') {
+    return null;
+  }
   
   return (
     <div className="h-screen w-64 bg-white shadow-md fixed left-0 top-0 pt-16 overflow-y-auto">

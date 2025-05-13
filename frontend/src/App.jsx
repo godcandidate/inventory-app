@@ -7,9 +7,11 @@ import LandingPage from './pages/LandingPage'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
+import InventoryManagement from './pages/InventoryManagement'
 import InventoryDashboard from './pages/InventoryDashboard'
 import ProductManagement from './pages/ProductManagement'
 import SalesDashboard from './pages/SalesDashboard'
+import SalesManagement from './pages/SalesManagement'
 
 // Auth Context
 import { AuthProvider, useAuth } from './context/AuthContext'
@@ -29,14 +31,16 @@ const ProtectedRoute = ({ children }) => {
 const AdminRoute = ({ children }) => {
   const { user } = useAuth();
   
-  if (!user || user.role !== 'admin') {
-    return <Navigate to="/dashboard" replace />;
+  if (!user) {
+    return <Navigate to="/login" replace />;
   }
   
+  // Allow all authenticated users to access inventory routes
   return children;
 };
 
 function App() {
+  console.log('App component rendering');
   return (
     <AuthProvider>
       <Router>
@@ -57,7 +61,7 @@ function App() {
             } />
             <Route path="/inventory/management" element={
               <AdminRoute>
-                <ProductManagement />
+                <InventoryManagement />
               </AdminRoute>
             } />
             <Route path="/sales" element={
@@ -65,14 +69,9 @@ function App() {
                 <SalesDashboard />
               </ProtectedRoute>
             } />
-            <Route path="/sales/history" element={
+            <Route path="/sales/management" element={
               <ProtectedRoute>
-                <SalesDashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/sales/add" element={
-              <ProtectedRoute>
-                <SalesDashboard />
+                <SalesManagement />
               </ProtectedRoute>
             } />
           </Routes>

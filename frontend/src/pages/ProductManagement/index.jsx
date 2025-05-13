@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../../components/layout/Layout';
 import { products, getStockStatus, getStatusColor, formatCurrency } from '../../data/mockData';
 
@@ -10,6 +10,17 @@ const ProductManagement = () => {
   const [currentProduct, setCurrentProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'ascending' });
+  
+  // Add console logs to debug
+  useEffect(() => {
+    console.log('ProductManagement component mounted');
+    console.log('Products data:', products);
+    console.log('Inventory state:', inventory);
+    return () => {
+      console.log('ProductManagement component unmounted');
+    };
+  }, [inventory]);
+  
   const [formData, setFormData] = useState({
     name: '',
     price: '',
@@ -134,9 +145,13 @@ const ProductManagement = () => {
 
   return (
     <Layout
-      title="Product Management"
+      title="Products Management"
       description="Manage your product inventory"
     >
+      <div className="bg-blue-50 p-4 mb-6 rounded-lg border border-blue-200">
+        <h2 className="text-lg font-semibold text-blue-700">Products Management View</h2>
+        <p className="text-sm text-blue-600">This is the Products Management tab where you can add, edit, and delete products.</p>
+      </div>
       <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-gray-900">Product Inventory</h2>

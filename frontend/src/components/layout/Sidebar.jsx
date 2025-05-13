@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   HomeIcon, 
   CubeIcon, 
@@ -12,10 +12,20 @@ import {
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [expandedMenus, setExpandedMenus] = useState({
     inventory: true,
     sales: true
   });
+  
+  useEffect(() => {
+    // Initialize expanded menus state
+  }, [location.pathname]);
+  
+  // Direct navigation functions
+  const navigateTo = (path) => {
+    navigate(path);
+  };
   
   const toggleMenu = (menu) => {
     setExpandedMenus(prev => ({
@@ -25,7 +35,13 @@ const Sidebar = () => {
   };
   
   const isActive = (path) => {
-    return location.pathname === path || location.pathname.startsWith(path + '/');
+    if (path === '/inventory') {
+      return location.pathname === '/inventory' && location.pathname !== '/inventory/management';
+    } else if (path === '/inventory/management') {
+      return location.pathname === '/inventory/management';
+    } else {
+      return location.pathname === path;
+    }
   };
   
   return (
@@ -59,23 +75,22 @@ const Sidebar = () => {
             {expandedMenus.inventory && (
               <ul className="pl-10 space-y-1">
                 <li>
-                  <Link 
-                    to="/inventory" 
-                    className={`flex items-center p-2 ${isActive('/inventory') && !isActive('/inventory/management') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
-                    end
+                  <button 
+                    onClick={() => navigateTo('/inventory')}
+                    className={`flex items-center p-2 w-full text-left ${isActive('/inventory') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
                   >
                     <ChartBarIcon className="h-4 w-4 mr-2" />
                     Inventory Dashboard
-                  </Link>
+                  </button>
                 </li>
                 <li>
-                  <Link 
-                    to="/inventory/management" 
-                    className={`flex items-center p-2 ${isActive('/inventory/management') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+                  <button 
+                    onClick={() => navigateTo('/inventory/management')}
+                    className={`flex items-center p-2 w-full text-left ${isActive('/inventory/management') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
                   >
                     <ListBulletIcon className="h-4 w-4 mr-2" />
                     Products Management
-                  </Link>
+                  </button>
                 </li>
               </ul>
             )}
@@ -107,8 +122,8 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link 
-                    to="/sales/history" 
-                    className={`flex items-center p-2 ${isActive('/sales/history') || isActive('/sales/add') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+                    to="/sales/management" 
+                    className={`flex items-center p-2 ${isActive('/sales/management') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
                   >
                     <ListBulletIcon className="h-4 w-4 mr-2" />
                     Sales Management

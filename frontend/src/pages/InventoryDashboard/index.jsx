@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../../components/layout/Layout';
 import { products, getStockStatus } from '../../data/mockData';
 
 const InventoryDashboard = () => {
+  useEffect(() => {
+    // Component mount effect
+    return () => {
+      // Cleanup on unmount
+    };
+  }, []);
+
   // Calculate inventory statistics
   const totalItems = products.length;
   const inStockItems = products.filter(item => getStockStatus(item.stock, item.threshold) === 'In Stock').length;
   const lowStockItems = products.filter(item => getStockStatus(item.stock, item.threshold) === 'Low Stock').length;
   const outOfStockItems = products.filter(item => getStockStatus(item.stock, item.threshold) === 'Out of Stock').length;
   
+  // Calculate inventory statistics for display
+  
   return (
     <Layout
       title="Inventory Dashboard"
       description="Overview of your inventory status"
     >
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {/* Total Products */}

@@ -7,7 +7,8 @@ import LandingPage from './pages/LandingPage'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
-import InventoryManagement from './pages/InventoryManagement'
+import InventoryDashboard from './pages/InventoryDashboard'
+import ProductManagement from './pages/ProductManagement'
 import SalesDashboard from './pages/SalesDashboard'
 
 // Auth Context
@@ -51,10 +52,25 @@ function App() {
             } />
             <Route path="/inventory" element={
               <AdminRoute>
-                <InventoryManagement />
+                <InventoryDashboard />
+              </AdminRoute>
+            } />
+            <Route path="/inventory/management" element={
+              <AdminRoute>
+                <ProductManagement />
               </AdminRoute>
             } />
             <Route path="/sales" element={
+              <ProtectedRoute>
+                <SalesDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/sales/history" element={
+              <ProtectedRoute>
+                <SalesDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/sales/add" element={
               <ProtectedRoute>
                 <SalesDashboard />
               </ProtectedRoute>

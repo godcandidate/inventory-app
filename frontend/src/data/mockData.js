@@ -53,43 +53,38 @@ export const products = [
 export const sales = [
   {
     id: 1,
-    productId: 1,
-    productName: "Wireless Headphones",
+    date: new Date("2025-05-12T10:30:00Z"),
+    product: products[0],
     quantity: 2,
-    total: 259.98,
-    timestamp: "2025-05-12T10:30:00Z"
+    total: 259.98
   },
   {
     id: 2,
-    productId: 3,
-    productName: "Bluetooth Speaker",
+    date: new Date("2025-05-12T09:15:00Z"),
+    product: products[2],
     quantity: 1,
-    total: 79.99,
-    timestamp: "2025-05-12T09:15:00Z"
+    total: 79.99
   },
   {
     id: 3,
-    productId: 2,
-    productName: "Smart Watch",
+    date: new Date("2025-05-11T16:45:00Z"),
+    product: products[1],
     quantity: 1,
-    total: 199.99,
-    timestamp: "2025-05-11T16:45:00Z"
+    total: 199.99
   },
   {
     id: 4,
-    productId: 5,
-    productName: "Wireless Mouse",
+    date: new Date("2025-05-11T14:20:00Z"),
+    product: products[4],
     quantity: 3,
-    total: 119.97,
-    timestamp: "2025-05-11T14:20:00Z"
+    total: 119.97
   },
   {
     id: 5,
-    productId: 1,
-    productName: "Wireless Headphones",
+    date: new Date("2025-05-10T11:05:00Z"),
+    product: products[0],
     quantity: 1,
-    total: 129.99,
-    timestamp: "2025-05-10T11:05:00Z"
+    total: 129.99
   }
 ];
 
@@ -130,8 +125,15 @@ export const formatCurrency = (amount) => {
   }).format(amount);
 };
 
-export const formatDate = (dateString) => {
-  const date = new Date(dateString);
+export const formatDate = (dateInput) => {
+  // Handle both Date objects and date strings
+  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+  
+  // Check if date is valid before formatting
+  if (isNaN(date.getTime())) {
+    return 'Invalid date';
+  }
+  
   return new Intl.DateTimeFormat('en-US', {
     month: 'short',
     day: 'numeric',

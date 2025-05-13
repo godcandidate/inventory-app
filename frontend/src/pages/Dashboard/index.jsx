@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../../components/common/Navbar';
+import Layout from '../../components/layout/Layout';
 import { products, sales, getStockStatus, getStatusColor, getTotalProducts, getTotalSales, getLowStockItems, formatCurrency, formatDate } from '../../data/mockData';
 
 const Dashboard = () => {
@@ -12,18 +12,10 @@ const Dashboard = () => {
   const lowStockItems = getLowStockItems();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      
-      <div className="pt-24 pb-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Page Header */}
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
-            <p className="mt-1 text-sm text-gray-500">
-              Welcome to your inventory management dashboard
-            </p>
-          </div>
+    <Layout
+      title="Dashboard Overview"
+      description="Welcome to your inventory management dashboard"
+    >
           
           {/* Alert Banner */}
           {lowStockItems.length > 0 && (
@@ -231,9 +223,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+    </Layout>
   );
 };
 

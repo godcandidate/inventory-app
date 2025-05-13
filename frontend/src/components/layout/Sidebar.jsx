@@ -1,46 +1,143 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   HomeIcon, 
   CubeIcon, 
   ShoppingCartIcon, 
   ExclamationCircleIcon, 
-  ChartBarIcon 
+  ChartBarIcon,
+  ListBulletIcon,
+  ChevronDownIcon
 } from '@heroicons/react/24/outline';
 
 const Sidebar = () => {
+  const location = useLocation();
+  const [expandedMenus, setExpandedMenus] = useState({
+    inventory: true,
+    sales: true
+  });
+  
+  const toggleMenu = (menu) => {
+    setExpandedMenus(prev => ({
+      ...prev,
+      [menu]: !prev[menu]
+    }));
+  };
+  
+  const isActive = (path) => {
+    return location.pathname === path || location.pathname.startsWith(path + '/');
+  };
+  
   return (
-    <div className="h-screen w-64 bg-white shadow-md fixed left-0 top-0 pt-16">
+    <div className="h-screen w-64 bg-white shadow-md fixed left-0 top-0 pt-16 overflow-y-auto">
       <div className="p-4">
         <ul className="space-y-2">
+          {/* Dashboard Overview */}
           <li>
-            <a href="#" className="flex items-center p-2 text-primary font-medium rounded-md bg-blue-50">
+            <Link 
+              to="/dashboard" 
+              className={`flex items-center p-2 ${isActive('/dashboard') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+            >
               <HomeIcon className="h-5 w-5 mr-3" />
-              Dashboard
-            </a>
+              Dashboard Overview
+            </Link>
           </li>
-          <li>
-            <a href="#" className="flex items-center p-2 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-md transition-colors duration-200">
-              <CubeIcon className="h-5 w-5 mr-3" />
-              Inventory
-            </a>
+          
+          {/* Inventory Section */}
+          <li className="space-y-1">
+            <div 
+              className="flex items-center justify-between p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md cursor-pointer transition-colors duration-200"
+              onClick={() => toggleMenu('inventory')}
+            >
+              <div className="flex items-center">
+                <CubeIcon className="h-5 w-5 mr-3" />
+                <span>Inventory</span>
+              </div>
+              <ChevronDownIcon className={`h-4 w-4 transition-transform duration-200 ${expandedMenus.inventory ? 'rotate-180' : ''}`} />
+            </div>
+            
+            {expandedMenus.inventory && (
+              <ul className="pl-10 space-y-1">
+                <li>
+                  <Link 
+                    to="/inventory" 
+                    className={`flex items-center p-2 ${isActive('/inventory') && !isActive('/inventory/management') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+                    end
+                  >
+                    <ChartBarIcon className="h-4 w-4 mr-2" />
+                    Inventory Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/inventory/management" 
+                    className={`flex items-center p-2 ${isActive('/inventory/management') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+                  >
+                    <ListBulletIcon className="h-4 w-4 mr-2" />
+                    Products Management
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
-          <li>
-            <a href="#" className="flex items-center p-2 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-md transition-colors duration-200">
-              <ShoppingCartIcon className="h-5 w-5 mr-3" />
-              Sales
-            </a>
+          
+          {/* Sales Section */}
+          <li className="space-y-1">
+            <div 
+              className="flex items-center justify-between p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md cursor-pointer transition-colors duration-200"
+              onClick={() => toggleMenu('sales')}
+            >
+              <div className="flex items-center">
+                <ShoppingCartIcon className="h-5 w-5 mr-3" />
+                <span>Sales</span>
+              </div>
+              <ChevronDownIcon className={`h-4 w-4 transition-transform duration-200 ${expandedMenus.sales ? 'rotate-180' : ''}`} />
+            </div>
+            
+            {expandedMenus.sales && (
+              <ul className="pl-10 space-y-1">
+                <li>
+                  <Link 
+                    to="/sales" 
+                    className={`flex items-center p-2 ${isActive('/sales') && !isActive('/sales/history') && !isActive('/sales/add') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+                  >
+                    <ChartBarIcon className="h-4 w-4 mr-2" />
+                    Sales Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/sales/history" 
+                    className={`flex items-center p-2 ${isActive('/sales/history') || isActive('/sales/add') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+                  >
+                    <ListBulletIcon className="h-4 w-4 mr-2" />
+                    Sales Management
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
+          
+          {/* Alerts */}
           <li>
-            <a href="#" className="flex items-center p-2 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-md transition-colors duration-200">
+            <Link 
+              to="/alerts" 
+              className={`flex items-center p-2 ${isActive('/alerts') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+            >
               <ExclamationCircleIcon className="h-5 w-5 mr-3" />
               Alerts
-            </a>
+            </Link>
           </li>
+          
+          {/* Reports */}
           <li>
-            <a href="#" className="flex items-center p-2 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-md transition-colors duration-200">
+            <Link 
+              to="/reports" 
+              className={`flex items-center p-2 ${isActive('/reports') ? 'text-blue-600 font-medium bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'} rounded-md transition-colors duration-200`}
+            >
               <ChartBarIcon className="h-5 w-5 mr-3" />
               Reports
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
@@ -51,7 +148,7 @@ const Sidebar = () => {
           </div>
           <div className="ml-3">
             <p className="text-sm font-medium text-gray-900">Store Manager</p>
-            <p className="text-xs text-gray-500">Main Branch</p>
+            <p className="text-xs text-gray-500">admin@example.com</p>
           </div>
         </div>
       </div>

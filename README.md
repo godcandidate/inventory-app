@@ -49,11 +49,11 @@ For testing purposes, you can use the following credentials:
 
 ## Screenshots
 
-<p align="center"> <img src="./assets/dashboard.png" alt="Users dashboard" width="600"> </p>
+<p align="center"> <img src="./assets/user.png" alt="Users dashboard" width="600"> </p>
 
-<p align="center"> <img src="./assets/dashboard.png" alt="Inventory dashboard" width="600"> </p>
+<p align="center"> <img src="./assets/inventory.png" alt="Inventory dashboard" width="600"> </p>
 
-<p align="center"> <img src="./assets/dashboard.png" alt="Sales dashboard" width="600"> </p>
+<p align="center"> <img src="./assets/sales.png" alt="Sales dashboard" width="600"> </p>
 
 ## Technologies Used
 

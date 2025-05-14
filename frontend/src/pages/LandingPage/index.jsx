@@ -36,9 +36,9 @@ const LandingPage = () => {
             </div>
             <div className="md:w-1/2">
               <img 
-                src="https://placehold.co/600x400?text=Inventory+Dashboard" 
+                src="/src/assets/inventory-image.png" 
                 alt="Inventory Dashboard Preview" 
-                className="rounded-lg shadow-xl"
+                className="rounded-lg shadow-xl w-full h-auto"
               />
             </div>
           </div>
